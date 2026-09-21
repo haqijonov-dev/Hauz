@@ -1,6 +1,6 @@
 {
-  "projectId": "REPLACE_WITH_YOUR_PROJECT_ID",
-  "projectName": "HAUZ Take Home",
+  "projectId": "6ab163cd003463dc2582",
+  "projectName": "HAUZ",
   "endpoint": "https://fra.cloud.appwrite.io/v1",
   "tablesDB": [
     {
