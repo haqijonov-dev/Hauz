@@ -43,9 +43,16 @@ function SignInPage() {
         setError(result.message);
         return;
       }
-      await queryClient.invalidateQueries({
-        queryKey: viewerQueryOptions.queryKey,
+      // Refresh the viewer, then send people where they belong.
+      const viewer = await queryClient.fetchQuery({
+        ...viewerQueryOptions,
+        staleTime: 0,
       });
+
+      if (viewer && !viewer.account) {
+        await navigate({ to: "/onboarding" });
+        return;
+      }
       await navigate({ to: "/" });
     },
     onError: () => setError("The code has 6 digits."),
