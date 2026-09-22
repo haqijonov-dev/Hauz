@@ -69,8 +69,8 @@ export const signOut = createServerFn({ method: "POST" }).handler(async () => {
       const { account } = createSessionClient(secret);
       await account.deleteSession({ sessionId: "current" });
     } catch (error) {
-      // The session may already be gone on Appwrite's side. Either way,
-      // the cookie below has to go, so this is not worth failing over.
+      // Appwrite tomonida session allaqachon yo'q bo'lishi mumkin. Baribir
+      // quyidagi cookie o'chadi, shuning uchun bu xato to'xtatishga arzimaydi.
       console.error("deleteSession failed", error);
     }
   }

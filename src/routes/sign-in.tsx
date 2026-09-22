@@ -61,7 +61,7 @@ function SignInPage() {
         return;
       }
 
-      // Refresh the viewer, then send people where they belong.
+      // Avval viewer'ni yangilaymiz, keyin odamni o'z joyiga yuboramiz.
       const viewer = await queryClient.fetchQuery({
         ...viewerQueryOptions,
         staleTime: 0,

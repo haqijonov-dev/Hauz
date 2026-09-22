@@ -29,7 +29,7 @@ export const getViewer = createServerFn({ method: "GET" }).handler(
         clearSessionCookie();
         return null;
       }
-      // Anything else (network, Appwrite down) is not a reason to sign out.
+      // Boshqa xatolar (internet, Appwrite ishlamayapti) chiqarish uchun sabab emas.
       //   agar boshqacha hatolik kelsa userni o'chirib tashlamaymiz
       console.error("account.get failed", error);
       throw new Error("Could not load your session.");

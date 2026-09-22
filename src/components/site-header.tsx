@@ -19,7 +19,7 @@ export function SiteHeader() {
   const logOut = useMutation({
     mutationFn: () => signOutFn({}),
     onSettled: async () => {
-      // The cookie is gone, so nothing cached about this person is valid.
+      // Cookie o'chdi, demak bu odam haqida saqlangan hech narsa yaroqli emas.
       queryClient.setQueryData(viewerQueryOptions.queryKey, null);
       await navigate({ to: "/" });
     },

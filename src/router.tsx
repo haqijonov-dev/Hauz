@@ -4,8 +4,8 @@ import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query
 
 import { routeTree } from './routeTree.gen'
 
-// Cache defaults for server data. Override per query where a route wants
-// something different.
+// Server ma'lumotlari uchun standart cache sozlamalari. Boshqacha kerak
+// bo'lgan joyda har bir query o'zi ustidan yozadi.
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

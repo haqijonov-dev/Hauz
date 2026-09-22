@@ -46,7 +46,7 @@ function ProfileForm({ account }: { account: PersonalAccount }) {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [saved, setSaved] = useState(false);
 
-  // An empty input means "clear this field", which the Function spells as null.
+  // Bo'sh maydon "tozala" degani, Function buni null deb tushunadi.
   const emptyToNull = (value: string) =>
     value.trim() === "" ? null : value.trim();
 
@@ -78,7 +78,7 @@ function ProfileForm({ account }: { account: PersonalAccount }) {
         return;
       }
 
-      // Take the Function's answer as the new truth for the form.
+      // Forma uchun haqiqat manbai Function qaytargan javob bo'ladi.
       setFirstName(result.account.firstName);
       setLastName(result.account.lastName);
       setContactEmail(result.account.contactEmail ?? "");

@@ -25,8 +25,8 @@ export const createAccount = createServerFn({ method: "POST" })
     const secret = readSessionSecret();
     if (!secret) return { ok: false, error: signedOut };
 
-    // The Function is idempotent: 201 when it creates the account,
-    // 200 when the same person already has one with the same role.
+    // Function idempotent: hisob yangi ochilsa 201, xuddi shu odamda xuddi
+    // shu rol bilan hisob bor bo'lsa 200 qaytadi.
     const result = await callPersonalAccount<PersonalAccount>(
       secret,
       "POST",
@@ -54,9 +54,9 @@ export const updateAccount = createServerFn({ method: "POST" })
     const secret = readSessionSecret();
     if (!secret) return { ok: false, error: signedOut };
 
-    // Only the changed fields travel. A missing field keeps its value,
-    // null clears it. The user id is never sent: the Function reads it
-    // from the Appwrite session.
+    // Faqat o'zgargan maydonlar yuboriladi: yo'q maydon eskicha qoladi,
+    // null esa tozalaydi. Foydalanuvchi id'si yuborilmaydi, uni Function
+    // o'zi session'dan oladi.
     const result = await callPersonalAccount<PersonalAccount>(
       secret,
       "PATCH",
