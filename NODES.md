@@ -8,4 +8,4 @@ onboarding sahifasida profile update qilingandan keyin home oynasiga yo'naltirma
 
 7-qadam log out cookie tozalanadi appwriteda ham sessiya ochiriladii lekin umumiy mijoz ochib ketmaydi profile appwriteda saqlanib qoladi
 
-Vitest orqali havsizlikni tekshirdim
+Vitest orqali havsizlikni tekshirdim, boshqa saytlardan kirish log out qilinganda profilega kirsa sign in ga yo'naltirish barchasi testdan o'tdi

@@ -2,7 +2,12 @@
 
 :root {
   color-scheme: light;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
   line-height: 1.5;
 }
 
@@ -101,7 +106,7 @@ input[type="radio"] {
   padding: 0;
 }
 
-button {
+/* button {
   padding: 0.5rem 1rem;
   font: inherit;
   color: #ffffff;
@@ -109,7 +114,7 @@ button {
   border: 1px solid #1f2937;
   border-radius: 6px;
   cursor: pointer;
-}
+} */
 
 button:disabled {
   opacity: 0.5;
