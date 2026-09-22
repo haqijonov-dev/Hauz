@@ -2,9 +2,12 @@ import { createServerFn } from "@tanstack/react-start";
 import { AppwriteException, ID } from "node-appwrite";
 import { z } from "zod";
 
-import { createAdminClient } from "#/server/appwrite";
-import { writeSessionCookie } from "#/server/session";
-
+import { createAdminClient, createSessionClient } from "#/server/appwrite";
+import {
+  clearSessionCookie,
+  readSessionSecret,
+  writeSessionCookie,
+} from "#/server/session";
 type AuthResult<T> = { ok: true; data: T } | { ok: false; message: string };
 
 // emailga kodni yuborish joyim
@@ -57,3 +60,21 @@ export const verifyCode = createServerFn({ method: "POST" })
       return { ok: false, message: "Could not sign you in. Try again." };
     }
   });
+
+export const signOut = createServerFn({ method: "POST" }).handler(async () => {
+  const secret = readSessionSecret();
+
+  if (secret) {
+    try {
+      const { account } = createSessionClient(secret);
+      await account.deleteSession({ sessionId: "current" });
+    } catch (error) {
+      // The session may already be gone on Appwrite's side. Either way,
+      // the cookie below has to go, so this is not worth failing over.
+      console.error("deleteSession failed", error);
+    }
+  }
+
+  clearSessionCookie();
+  return null;
+});

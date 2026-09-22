@@ -36,3 +36,33 @@ export const createAccount = createServerFn({ method: "POST" })
     if (result.ok) return { ok: true, account: result.data };
     return { ok: false, error: result.error };
   });
+
+export const updateAccount = createServerFn({ method: "POST" })
+  .validator(
+    z
+      .object({
+        firstName: z.string().trim().min(1).max(100).optional(),
+        lastName: z.string().trim().min(1).max(100).optional(),
+        contactEmail: z.email().max(254).nullable().optional(),
+        bio: z.string().trim().min(1).max(2000).nullable().optional(),
+      })
+      .refine((changes) => Object.keys(changes).length > 0, {
+        message: "Nothing to update.",
+      }),
+  )
+  .handler(async ({ data }): Promise<AccountResult> => {
+    const secret = readSessionSecret();
+    if (!secret) return { ok: false, error: signedOut };
+
+    // Only the changed fields travel. A missing field keeps its value,
+    // null clears it. The user id is never sent: the Function reads it
+    // from the Appwrite session.
+    const result = await callPersonalAccount<PersonalAccount>(
+      secret,
+      "PATCH",
+      data,
+    );
+
+    if (result.ok) return { ok: true, account: result.data };
+    return { ok: false, error: result.error };
+  });

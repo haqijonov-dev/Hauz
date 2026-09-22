@@ -1,10 +1,28 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 
+import { signOut } from "#/functions/auth";
 import { viewerQueryOptions } from "#/functions/viewer";
 
 export function SiteHeader() {
   const { data: viewer } = useSuspenseQuery(viewerQueryOptions);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const signOutFn = useServerFn(signOut);
+
+  const logOut = useMutation({
+    mutationFn: () => signOutFn({}),
+    onSettled: async () => {
+      // The cookie is gone, so nothing cached about this person is valid.
+      queryClient.setQueryData(viewerQueryOptions.queryKey, null);
+      await navigate({ to: "/" });
+    },
+  });
 
   return (
     <header className="site-header">
@@ -12,9 +30,15 @@ export function SiteHeader() {
 
       {viewer ? (
         <div className="site-header__user">
+          {viewer.account && <Link to="/profile">Profile</Link>}
           <span>{viewer.account?.firstName ?? viewer.user.email}</span>
-          {/* Wired up in step 7. */}
-          <button type="button">Log out</button>
+          <button
+            type="button"
+            onClick={() => logOut.mutate()}
+            disabled={logOut.isPending}
+          >
+            {logOut.isPending ? "Logging out…" : "Log out"}
+          </button>
         </div>
       ) : (
         <Link to="/sign-in">Sign in</Link>
