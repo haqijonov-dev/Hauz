@@ -19,10 +19,10 @@ const roleLabels = {
 export const Route = createFileRoute("/profile")({
   beforeLoad: ({ context }) => {
     if (!context.viewer) {
-      throw redirect({ to: "/sign-in" });
+      throw redirect({ to: "/sign-in", search: { redirect: "/profile" } });
     }
     if (!context.viewer.account) {
-      throw redirect({ to: "/onboarding" });
+      throw redirect({ to: "/onboarding", search: { redirect: "/profile" } });
     }
   },
   component: ProfilePage,

@@ -1,16 +1,33 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, redirect } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
+import { z } from "zod";
 
 import { requestCode, verifyCode } from "#/functions/auth";
 import { viewerQueryOptions } from "#/functions/viewer";
+import { safeRedirect } from "#/lib/safe-redirect";
+
+const searchSchema = z.object({
+  redirect: z.string().optional(),
+});
 
 export const Route = createFileRoute("/sign-in")({
+  validateSearch: searchSchema,
+  beforeLoad: ({ context, search }) => {
+    if (!context.viewer) return;
+
+    const target = safeRedirect(search.redirect);
+    if (context.viewer.account) {
+      throw redirect({ href: target });
+    }
+    throw redirect({ to: "/onboarding", search: { redirect: target } });
+  },
   component: SignInPage,
 });
 
 function SignInPage() {
+  const search = Route.useSearch();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -43,17 +60,20 @@ function SignInPage() {
         setError(result.message);
         return;
       }
+
       // Refresh the viewer, then send people where they belong.
       const viewer = await queryClient.fetchQuery({
         ...viewerQueryOptions,
         staleTime: 0,
       });
 
+      const target = safeRedirect(search.redirect);
+
       if (viewer && !viewer.account) {
-        await navigate({ to: "/onboarding" });
+        await navigate({ to: "/onboarding", search: { redirect: target } });
         return;
       }
-      await navigate({ to: "/" });
+      await navigate({ href: target });
     },
     onError: () => setError("The code has 6 digits."),
   });

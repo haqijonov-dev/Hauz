@@ -3,7 +3,7 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useLocation } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 
 import { signOut } from "#/functions/auth";
@@ -13,6 +13,7 @@ export function SiteHeader() {
   const { data: viewer } = useSuspenseQuery(viewerQueryOptions);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const location = useLocation();
   const signOutFn = useServerFn(signOut);
 
   const logOut = useMutation({
@@ -41,7 +42,9 @@ export function SiteHeader() {
           </button>
         </div>
       ) : (
-        <Link to="/sign-in">Sign in</Link>
+        <Link to="/sign-in" search={{ redirect: location.href }}>
+          Sign in
+        </Link>
       )}
     </header>
   );

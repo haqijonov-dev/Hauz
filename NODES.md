@@ -5,3 +5,7 @@ brifingda aytilgan profile oynasida user id yuborilsin shunga qarab qaysi userni
 onboarding qismida account.ts ichida fhunctionga userId ni qo'shib jo'natmayman sabab boshqa birov o'zgartirmasligi uchun, uni appwrite ozi aniqlaydi mijoz karta raqamiga qarab
 
 onboarding sahifasida profile update qilingandan keyin home oynasiga yo'naltirmadim sababb user nimalar o'zgarganini ko'zi bilan ko'rib turgani yaxshiroq, home ga yo'naltirsam user nima o'zgarganini bilishi uchun yana qaytib kelishga to'g'ri kelar edi
+
+7-qadam log out cookie tozalanadi appwriteda ham sessiya ochiriladii lekin umumiy mijoz ochib ketmaydi profile appwriteda saqlanib qoladi
+
+Vitest orqali havsizlikni tekshirdim

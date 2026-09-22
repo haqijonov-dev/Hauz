@@ -2,24 +2,32 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-
+import { z } from "zod";
 import { createAccount } from "#/functions/account";
 import { viewerQueryOptions } from "#/functions/viewer";
 import type { Role } from "#/server/personal-account";
+import { safeRedirect } from "#/lib/safe-redirect";
 
+const searchSchema = z.object({
+  redirect: z.string().optional(),
+});
 export const Route = createFileRoute("/onboarding")({
-  beforeLoad: ({ context }) => {
+  validateSearch: searchSchema,
+  beforeLoad: ({ context, search }) => {
+    const target = safeRedirect(search.redirect);
+
     if (!context.viewer) {
-      throw redirect({ to: "/sign-in" });
+      throw redirect({ to: "/sign-in", search: { redirect: target } });
     }
     if (context.viewer.account) {
-      throw redirect({ to: "/" });
+      throw redirect({ href: target });
     }
   },
   component: OnboardingPage,
 });
 
 function OnboardingPage() {
+  const search = Route.useSearch();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const createAccountFn = useServerFn(createAccount);
@@ -48,7 +56,7 @@ function OnboardingPage() {
       }
 
       await queryClient.fetchQuery({ ...viewerQueryOptions, staleTime: 0 });
-      await navigate({ to: "/" });
+      await navigate({ href: safeRedirect(search.redirect) });
     },
     onError: () => setError("Check the form and try again."),
   });
