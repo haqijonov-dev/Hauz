@@ -8,10 +8,11 @@ import {
 
 const SESSION_COOKIE = "hauz_session";
 
+//cookieni tekshiradi agar cookieda mijoz kartasi bo'lmasa tizimga kirmagan hisoblanadi
 export function readSessionSecret(): string | undefined {
   return getCookie(SESSION_COOKIE);
 }
-
+// keyingi qadamda mijoz muvofaqiyatli tizimga kirsa uni qo'liga konverta karta solib beramiz
 export function writeSessionCookie(secret: string, expiresAt: string) {
   setCookie(SESSION_COOKIE, secret, {
     httpOnly: true,
@@ -22,6 +23,7 @@ export function writeSessionCookie(secret: string, expiresAt: string) {
   });
 }
 
+// mijozga berilingan konvertni va uni ichidagi kartani o'chirib tashlash
 export function clearSessionCookie() {
   deleteCookie(SESSION_COOKIE, { path: "/" });
 }

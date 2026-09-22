@@ -36,3 +36,18 @@ button {
   padding: 0.4rem 0.9rem;
   font: inherit;
 }
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.site-header__user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}

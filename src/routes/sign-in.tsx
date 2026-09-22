@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createFileRoute,
   useNavigate,
@@ -8,13 +8,14 @@ import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 
 import { requestCode, verifyCode } from "#/functions/auth";
+import { viewerQueryOptions } from "#/functions/viewer";
 
 export const Route = createFileRoute("/sign-in")({
   component: SignInPage,
 });
 
 function SignInPage() {
-  const router = useRouter();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -46,12 +47,15 @@ function SignInPage() {
         setError(result.message);
         return;
       }
-      await router.invalidate();
+      await queryClient.invalidateQueries({
+        queryKey: viewerQueryOptions.queryKey,
+      });
       await navigate({ to: "/" });
     },
     onError: () => setError("The code has 6 digits."),
   });
 
+  //   birinchi ekran email formasi
   if (userId === null) {
     return (
       <main>
@@ -81,6 +85,7 @@ function SignInPage() {
     );
   }
 
+  //   ikkinchi ekran code formasi
   return (
     <main>
       <h1>Check your email</h1>

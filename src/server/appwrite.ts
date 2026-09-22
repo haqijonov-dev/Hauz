@@ -11,6 +11,7 @@ function baseClient() {
     .setProject(APPWRITE_PROJECT_ID);
 }
 
+// admin
 export function createAdminClient() {
   const client = baseClient().setKey(env().APPWRITE_API_KEY);
 
@@ -19,6 +20,7 @@ export function createAdminClient() {
   };
 }
 
+// user
 export function createSessionClient(sessionSecret: string) {
   const client = baseClient().setSession(sessionSecret);
 

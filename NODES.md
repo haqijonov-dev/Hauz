@@ -1,0 +1,1 @@
+brifingda aytilgan profile oynasida user id yuborilsin shunga qarab qaysi userning malumoti o'zgartish kerak ekanligin aniqlanadi deyilingan lekin men bundan qochdim va buning o'rniga sessiya dan userni aniqlab olishni maqul topdim sabab user id dev tools orqali o'zgartitirilsa bo'ladi va bu o'z navbatida havf tug'duradi

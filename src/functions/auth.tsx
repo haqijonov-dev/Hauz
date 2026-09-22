@@ -7,14 +7,17 @@ import { writeSessionCookie } from "#/server/session";
 
 type AuthResult<T> = { ok: true; data: T } | { ok: false; message: string };
 
-export const requestCode = createServerFn({ method: "POST" })
-  .validator(z.object({ email: z.email() }))
+// emailga kodni yuborish joyim
+export const requestCode = createServerFn({ method: "POST" }) //darchani ochish
+  .validator(z.object({ email: z.email() })) // darchadagi tekshiruvim, haqiqatdan emailmi yoki yo'q
+
+  //   handler ichki xonadagi ish
   .handler(async ({ data }): Promise<AuthResult<{ userId: string }>> => {
     const { account } = createAdminClient();
-
+    // bank emailga 6 xonali kod yuboradi.
     try {
       const token = await account.createEmailToken({
-        userId: ID.unique(),
+        userId: ID.unique(), // mijoz yangi bo'lsa unga yangi id ber | agar bo'lsa yangini etiborsiz qoldir
         email: data.email,
       });
       return { ok: true, data: { userId: token.userId } };
