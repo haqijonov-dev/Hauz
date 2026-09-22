@@ -24,16 +24,18 @@ export const getViewer = createServerFn({ method: "GET" }).handler(
       user = await account.get();
     } catch (error) {
       if (error instanceof AppwriteException && error.code === 401) {
-        // Appwrite says the session is gone or invalid: sign the person out.
+        // eskirgan vat o'tib ketgan konvertni o'chirib yuboradi | Bu yerda brief'dagi tuzoq hal qilinadi.
+        // Brief: "har qanday xatoda cookie'ni o'chir va sign-in ko'rsat". Biz esa ikki holatni ajratamiz
         clearSessionCookie();
         return null;
       }
       // Anything else (network, Appwrite down) is not a reason to sign out.
+      //   agar boshqacha hatolik kelsa userni o'chirib tashlamaymiz
       console.error("account.get failed", error);
       throw new Error("Could not load your session.");
     }
 
-    const result = await callPersonalAccount<PersonalAccount>(secret, "GET");
+    const result = await callPersonalAccount<PersonalAccount>(secret, "GET"); //profil oynasidan so'rash
 
     if (result.ok) {
       return {
